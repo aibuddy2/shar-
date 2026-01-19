@@ -59,26 +59,43 @@
 <body class="bg-slate-50 text-slate-900 overflow-x-hidden">
     <div id="root">
         <div style="height: 100vh; display: flex; align-items: center; justify-content: center; font-family: sans-serif; color: #64748b;">
-            <div style="text-align: center;">
+            <div id="status-container" style="text-align: center; padding: 20px;">
                 <div class="spinner"></div>
-                <div style="font-weight: 600;">Loading Shar App...</div>
+                <div style="font-weight: 600; margin-bottom: 8px;">Loading Shar App...</div>
+                <div id="debug-info" style="font-size: 10px; color: #94a3b8;">Initializing modules...</div>
             </div>
         </div>
     </div>
+
+    <!-- Explicitly load the entry point -->
+    <script type="module">
+        import './index.tsx';
+        document.getElementById('debug-info').innerText = 'Starting React...';
+    </script>
+
     <script>
-        // Catch global errors to help debugging
         window.onerror = function(msg, url, lineNo, columnNo, error) {
             console.error('Global Error:', msg, error);
-            const root = document.getElementById('root');
-            if (root && (root.innerText.includes('Loading') || root.innerHTML.trim() === '')) {
-                root.innerHTML = '<div style="padding: 20px; color: #ef4444; font-family: sans-serif; text-align: center; margin-top: 50px;">' +
-                    '<h3 style="margin-bottom: 8px;">Failed to start application</h3>' +
-                    '<p style="font-size: 12px; color: #64748b; margin-bottom: 4px;">' + msg + '</p>' +
-                    '<p style="font-size: 10px; color: #94a3b8;">' + url + ' (Line: ' + lineNo + ')</p>' +
-                    '<button onclick="location.reload()" style="margin-top: 16px; padding: 10px 20px; background: #2563eb; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">Retry</button>' +
-                '</div>';
+            const container = document.getElementById('status-container');
+            if (container) {
+                container.innerHTML = `
+                    <div style="color: #ef4444; font-family: sans-serif; max-width: 300px; margin: 0 auto;">
+                        <h3 style="margin-bottom: 8px;">Startup Failed</h3>
+                        <p style="font-size: 12px; color: #64748b; line-height: 1.5; margin-bottom: 12px;">${msg}</p>
+                        <div style="font-size: 10px; color: #94a3b8; background: #f1f5f9; padding: 8px; border-radius: 8px; text-align: left; overflow-wrap: break-word;">
+                            ${url}<br>Line: ${lineNo}:${columnNo}
+                        </div>
+                        <button onclick="location.reload()" style="margin-top: 20px; padding: 10px 20px; background: #2563eb; color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; width: 100%;">Retry Load</button>
+                    </div>
+                `;
             }
             return false;
+        };
+        
+        // Handle unhandled promise rejections (like dynamic import fails)
+        window.onunhandledrejection = function(event) {
+            console.error('Unhandled Rejection:', event.reason);
+            window.onerror('Promise Rejection: ' + event.reason, '', 0, 0, event.reason);
         };
     </script>
 </body>

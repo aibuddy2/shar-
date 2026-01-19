@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { supabase } from '../supabase';
+import { supabase } from '../supabase.ts';
 import { Mail, Lock, User, LogIn, ChevronRight, AlertCircle, ArrowLeft } from 'lucide-react';
 
 interface AuthViewProps {
