@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
-import { Newspaper, Bell, Clock, ArrowUpRight, AlertTriangle } from 'lucide-react';
-import { supabase } from '../supabase';
-import { DailyUpdate, Alert } from '../types';
+import { Newspaper, Bell, Clock, ArrowUpRight } from 'lucide-react';
+import { supabase } from '../supabase.ts';
+import { DailyUpdate, Alert } from '../types.ts';
 
 const NewsView: React.FC = () => {
   const [news, setNews] = useState<DailyUpdate[]>([]);
@@ -37,7 +37,6 @@ const NewsView: React.FC = () => {
         {loading && <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>}
       </div>
 
-      {/* Alerts Section First */}
       {alerts.length > 0 && (
         <div className="space-y-3">
           <h3 className="text-[10px] font-bold text-red-500 uppercase tracking-widest px-1">အရေးပေါ် သတိပေးချက်များ</h3>
@@ -57,7 +56,6 @@ const NewsView: React.FC = () => {
         </div>
       )}
 
-      {/* News Section */}
       <div className="space-y-4">
         <h3 className="text-[10px] font-bold text-blue-500 uppercase tracking-widest px-1">နောက်ဆုံးရ သတင်းများ</h3>
         {news.map(item => (

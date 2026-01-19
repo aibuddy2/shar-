@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { BookOpen, FileText, Scale, Home, Info, ChevronRight, Loader2 } from 'lucide-react';
-import { supabase } from '../supabase';
-import { KnowledgeItem } from '../types';
+import { supabase } from '../supabase.ts';
+import { KnowledgeItem } from '../types.ts';
 
 const KnowledgeView: React.FC = () => {
   const [items, setItems] = useState<KnowledgeItem[]>([]);
@@ -111,13 +111,6 @@ const KnowledgeView: React.FC = () => {
           })}
         </div>
       )}
-
-      <div className="bg-blue-50 p-6 rounded-[40px] border border-blue-100 mt-8">
-        <h4 className="font-bold text-blue-800 mb-2">သိမှတ်ဖွယ်ရာ</h4>
-        <p className="text-xs text-blue-700 leading-relaxed">
-          ထိုင်းနိုင်ငံရှိ မြန်မာအလုပ်သမားများ သိထားသင့်သည့် ဥပဒေများနှင့် နေ့စဉ်လူနေမှုဘဝအတွက် လိုအပ်သော အချက်အလက်များကို ဤနေရာတွင် စုစည်းတင်ပြထားပါသည်။
-        </p>
-      </div>
     </div>
   );
 };

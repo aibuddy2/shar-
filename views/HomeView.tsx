@@ -3,23 +3,20 @@ import React, { useState, useEffect } from 'react';
 import { 
   TrendingUp, 
   MessageSquare, 
-  Search, 
   Send, 
   Sparkles, 
   ShieldCheck, 
-  ArrowRight, 
   Crown, 
   Zap, 
   CheckCircle2, 
   Copy, 
-  X,
   Clock,
   Info,
   LogIn
 } from 'lucide-react';
-import { CurrencyRates, Profile } from '../types';
-import { askShaAI } from '../geminiService';
-import { supabase } from '../supabase';
+import { CurrencyRates, Profile } from '../types.ts';
+import { askShaAI } from '../geminiService.ts';
+import { supabase } from '../supabase.ts';
 
 interface HomeViewProps {
   profile: Profile | null;
@@ -87,7 +84,7 @@ const HomeView: React.FC<HomeViewProps> = ({ profile, onAdminClick, onUpdateProf
         setAiResponse("⚠️ AI အား မေးမြန်းရန် အရင်ဆုံး အကောင့်ဝင်ပေးပါ။");
       } else {
         const limit = getChatLimit();
-        setAiResponse(`⚠️ ယနေ့အတွက် AI မေးခွန်းကန့်သတ်ချက် (${limit} ကြိမ်) ပြည့်သွားပါပြီ။ ${!profile?.has_survival_pack ? 'Survival Pack ဝယ်ယူပြီး တစ်ရက်လျှင် အကြိမ် ၂၀ အထိ မေးမြန်းနိုင်ပါသည်။' : 'မနက်ဖြန်မှ ပြန်လည်မေးမြန်းနိုင်ပါမည်။'}`);
+        setAiResponse(`⚠️ ယနေ့အတွက် AI မေးခွန်းကန့်သတ်ချက် (${limit} ကြိမ်) ပြည့်သွားပါပြီ။ ${!profile?.has_survival_pack ? 'Survival Pack ဝယ်ယူပြီး တစ်ရက်လျှင် အကြိမ် ၂၀ အထိ မေးမြန်းနိုင်ပါသည်။' : 'မနက်ဖြန်မှ ပြလည်မေးမြန်းနိုင်ပါမည်။'}`);
       }
       setIsAsking(false);
       return;
@@ -151,7 +148,6 @@ const HomeView: React.FC<HomeViewProps> = ({ profile, onAdminClick, onUpdateProf
 
   return (
     <div className="px-6 py-6 space-y-6">
-      {/* Greetings */}
       <div className="flex justify-between items-start">
         <div>
           <h2 className="text-2xl font-bold text-slate-800">မင်္ဂလာပါ 👋</h2>
@@ -176,7 +172,6 @@ const HomeView: React.FC<HomeViewProps> = ({ profile, onAdminClick, onUpdateProf
         </div>
       </div>
 
-      {/* Currency Card */}
       <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-[40px] p-6 text-white shadow-xl relative overflow-hidden animate-in">
         <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
         <div className="flex justify-between items-start mb-4">
@@ -197,7 +192,6 @@ const HomeView: React.FC<HomeViewProps> = ({ profile, onAdminClick, onUpdateProf
         </div>
       </div>
 
-      {/* Survival Pack Status Section */}
       <div className={`rounded-[40px] p-6 shadow-sm border animate-in [animation-delay:0.05s] ${
         profile?.has_survival_pack 
         ? 'bg-amber-50 border-amber-100' 
@@ -258,7 +252,6 @@ const HomeView: React.FC<HomeViewProps> = ({ profile, onAdminClick, onUpdateProf
         )}
       </div>
 
-      {/* AI Assistant Section */}
       <div className={`bg-white rounded-[40px] p-6 shadow-sm border border-slate-100 space-y-4 animate-in [animation-delay:0.1s] ${!profile ? 'opacity-80 grayscale-[0.5]' : ''}`}>
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2 text-blue-600">
@@ -297,21 +290,6 @@ const HomeView: React.FC<HomeViewProps> = ({ profile, onAdminClick, onUpdateProf
           </button>
         </div>
 
-        {!profile && (
-          <div className="bg-blue-50/50 p-4 rounded-2xl text-center border border-blue-100/50 animate-pulse">
-            <p className="text-[11px] font-bold text-blue-800">
-              AI အကူအညီရယူရန် အခမဲ့အကောင့် ဖွင့်ပါ။
-            </p>
-          </div>
-        )}
-
-        {profile && !profile?.has_survival_pack && remainingChatsCount() <= 1 && (
-          <div className="flex items-start space-x-2 p-3 bg-amber-50 rounded-2xl border border-amber-100 text-[10px] text-amber-700 leading-tight">
-            <Info size={14} className="shrink-0" />
-            <p>မေးခွန်းကန့်သတ်ချက် ပြည့်တော့မည်ဖြစ်၍ Survival Pack ဝယ်ယူပြီး ၂၀ ကြိမ်အထိ တိုးမြှင့်လိုက်ပါ။</p>
-          </div>
-        )}
-
         {aiResponse && (
           <div className="bg-blue-50 rounded-2xl p-4 text-sm text-slate-700 animate-in leading-relaxed border border-blue-100">
             {aiResponse}
@@ -319,7 +297,6 @@ const HomeView: React.FC<HomeViewProps> = ({ profile, onAdminClick, onUpdateProf
         )}
       </div>
 
-      {/* Payment Modal */}
       {showPaymentModal && (
         <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center p-4">
           <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={() => setShowPaymentModal(false)}></div>

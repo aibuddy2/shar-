@@ -9,19 +9,18 @@ import {
   ShieldCheck,
   LogOut,
   X,
-  LogIn,
-  Settings
+  LogIn
 } from 'lucide-react';
-import { supabase } from './supabase';
-import { Profile } from './types';
-import HomeView from './views/HomeView';
-import NewsView from './views/NewsView';
-import AgentsView from './views/AgentsView';
-import KnowledgeView from './views/KnowledgeView';
-import FavoritesView from './views/FavoritesView';
-import AuthView from './views/AuthView';
-import AdminDashboardView from './views/AdminDashboardView';
-import Splash from './components/Splash';
+import { supabase } from './supabase.ts';
+import { Profile } from './types.ts';
+import HomeView from './views/HomeView.tsx';
+import NewsView from './views/NewsView.tsx';
+import AgentsView from './views/AgentsView.tsx';
+import KnowledgeView from './views/KnowledgeView.tsx';
+import FavoritesView from './views/FavoritesView.tsx';
+import AuthView from './views/AuthView.tsx';
+import AdminDashboardView from './views/AdminDashboardView.tsx';
+import Splash from './components/Splash.tsx';
 
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState('home');
@@ -36,7 +35,6 @@ const App: React.FC = () => {
       setSession(session);
       if (session) {
         fetchProfile(session.user.id);
-        // If we are on auth screen but already have a session, go home
         if (activeTab === 'auth') setActiveTab('home');
       }
       setTimeout(() => setLoading(false), 2000);
@@ -46,7 +44,6 @@ const App: React.FC = () => {
       setSession(session);
       if (session) {
         fetchProfile(session.user.id);
-        // Automatically redirect to home if user was on the auth screen and just logged in
         setActiveTab((prev) => prev === 'auth' ? 'home' : prev);
       } else {
         setProfile(null);
@@ -68,7 +65,6 @@ const App: React.FC = () => {
       if (data) {
         setProfile(data);
       } else {
-        // Create profile if it doesn't exist
         const { data: newProfile } = await supabase
           .from('profiles')
           .insert([{ 
@@ -102,8 +98,6 @@ const App: React.FC = () => {
 
   const renderView = () => {
     if (isAdminMode) return <AdminDashboardView onClose={() => setIsAdminMode(false)} />;
-    
-    // Safety check: if user is logged in but on 'auth' tab, show 'home'
     if (session && activeTab === 'auth') {
       return <HomeView profile={profile} onAdminClick={() => setIsAdminMode(true)} onUpdateProfile={() => session && fetchProfile(session.user.id)} />;
     }

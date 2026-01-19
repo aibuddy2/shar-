@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
-import { ShieldCheck, Star, MapPin, Phone, MessageCircle, Lock, Crown, Info, Loader2, X, Copy, CheckCircle2 } from 'lucide-react';
-import { supabase } from '../supabase';
-import { Agent, Profile } from '../types';
+import { ShieldCheck, Star, MapPin, Phone, MessageCircle, Lock, Crown, Loader2, X, Copy, CheckCircle2 } from 'lucide-react';
+import { supabase } from '../supabase.ts';
+import { Agent, Profile } from '../types.ts';
 
 interface AgentsViewProps {
   profile: Profile | null;
@@ -41,8 +41,6 @@ const AgentsView: React.FC<AgentsViewProps> = ({ profile, onUpdateProfile }) => 
     if (!profile?.id) return;
     setIsPurchasing(true);
     
-    // In a real app, this might send a notification to admin for verification
-    // For MVP, we auto-approve after they click confirm payment
     const expiryDate = new Date();
     expiryDate.setDate(expiryDate.getDate() + 7);
     
@@ -96,7 +94,6 @@ const AgentsView: React.FC<AgentsViewProps> = ({ profile, onUpdateProfile }) => 
         </div>
       )}
 
-      {/* Premium Banner */}
       {!loading && !profile?.has_survival_pack && (
         <div className="bg-gradient-to-r from-amber-500 to-orange-600 rounded-[30px] p-6 text-white shadow-lg space-y-3 relative overflow-hidden animate-in">
           <div className="absolute -right-4 -bottom-4 opacity-20">
@@ -116,7 +113,6 @@ const AgentsView: React.FC<AgentsViewProps> = ({ profile, onUpdateProfile }) => 
         </div>
       )}
 
-      {/* Agents List */}
       {!loading && (
         <div className="space-y-4">
           {filteredAgents.length === 0 ? (
@@ -180,7 +176,6 @@ const AgentsView: React.FC<AgentsViewProps> = ({ profile, onUpdateProfile }) => 
         </div>
       )}
 
-      {/* Payment Modal */}
       {showPaymentModal && (
         <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center p-4">
           <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={() => setShowPaymentModal(false)}></div>
